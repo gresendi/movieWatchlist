@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Movie Watchlist</span>
+    </div> 
+  </nav>
+  <div class="container-sm m-5">
+    <form>
+      <p>
+        <label for="title">Movie</label>
+        <input type="text" name="title" id="title">
+        <button id="search">Search</button>
+      </p>
+    </form>
+  </div>
+  <div class="container-sm m-5">
+    <div class="row">
+      <div class="col-8">
+        <h2>Movie</h2>
+        <hr>
+        <div id='movie' class="col-8">
+
+        </div>
+      </div>
+      <div class="col-4">
+      <h2>WatchList</h2>
+      <hr>
+      <div id="watchList">
+
+      </div>
+      
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  <script>
+
+    const movie = JSON.parse(localStorage.getItem('movie')) || []
+    
+
+    const render = () =>{
+      document.getElementById('watchList').innerHTML = ''
+      movie.forEach(element => {
+        
+        let title = document.createElement('h3')
+        title.textContent=element
+        document.getElementById('watchList').append(title)
+      });
+    }
+    render()
+    
+
+
+
+
+    document.getElementById('search').addEventListener('click', event => {
+        event.preventDefault()
+
+        const title = document.getElementById('title').value
+        console.log(title)
+        axios.get(`http://www.omdbapi.com/?apikey=trilogy&t=${title}`)
+          .then(res => {
+           const data = res.data
+            console.log(data)
+
+            let movieElem = document.createElement('div')
+            document.getElementById('movie').innerHTML =''
+            movieElem.innerHTML =`
+            <h2>${title}</h2>
+            <img src ="${data.Poster} alt = "${title}>
+            <h2>Plot</h2>
+            <p>${data.Plot}</p>
+
+            `
+            if(!movie.includes(title))
+            {
+               movie.push(title)
+              localStorage.setItem('movie', JSON.stringify(movie))
+             
+              render()
+            }
+             document.getElementById('movie').append(movieElem)
+            document.getElementById('title').value = ''
+
+           
+              })
+          
+          .catch(err => console.error(err))
+
+            })
+
+  </script>
+</body>
+</html>
