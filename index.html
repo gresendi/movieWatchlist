@@ -57,14 +57,29 @@
       document.getElementById('watchList').innerHTML = ''
       movie.forEach(element => {
         
-        let title = document.createElement('h3')
-        title.textContent=element
+        let title = document.createElement('div')
+        title.className = 'row'
+        title.innerHTML=`
+        <div class= 'col-8'>
+        <h3>${element}</h3>
+        </div>
+        <div class= 'col-4'>
+        <button class = "delete"> remove</button>
+        </div>`
         document.getElementById('watchList').append(title)
+
+        
       });
     }
     render()
     
-
+    document.addEventListener('click',event =>{
+      if(event.target.className ===('delete'))
+      {
+        event.target.parentNode.parentNode.remove()
+        
+      }
+    })
 
 
 
