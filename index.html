@@ -73,7 +73,7 @@
 
         const title = document.getElementById('title').value
         console.log(title)
-        axios.get(`http://www.omdbapi.com/?apikey=trilogy&t=${title}`)
+        axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${title}`)
           .then(res => {
            const data = res.data
             console.log(data)
